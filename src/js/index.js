@@ -1,8 +1,11 @@
 import Notiflix from 'notiflix';
 import { _ } from 'lodash';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
+const loadBtn = document.querySelector('.load-more');
 const pictureGallery = document.querySelector('.gallery');
 
 const KEY = '33302175-33178da1359f032779e0154a7';
@@ -17,11 +20,19 @@ function clearGallery() {
   pictureGallery.innerHTML = '';
 }
 
-function createGallery(imgSrc, imgAlt, likes, views, comments, downloads) {
+function createGallery(
+  largeImg,
+  smallImg,
+  imgAlt,
+  likes,
+  views,
+  comments,
+  downloads
+) {
   const pictureDiv = document.createElement('div');
   pictureDiv.innerHTML = `
   <div class="photo-card">
-  <img src="${imgSrc}" alt="${imgAlt}" loading="lazy"/>
+  <a href='${largeImg}' class='photo-link'><img src="${smallImg}" alt="${imgAlt}" loading="lazy"/></a>
   <div class="info">
     <p class="info-item">
       <b>Likes:</b>
@@ -42,7 +53,14 @@ function createGallery(imgSrc, imgAlt, likes, views, comments, downloads) {
   </div>
 </div>
 `;
+
   pictureGallery.append(pictureDiv);
+  const lightbox = new SimpleLightbox('.photo-card photo-link', {
+    enableKeyboard: true,
+    captions: true,
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
 }
 
 function findPictures(query) {
@@ -82,6 +100,7 @@ function findPictures(query) {
 
       for (let i = 0; ; i++) {
         createGallery(
+          hits[i]['largeImageURL'],
           hits[i]['previewURL'],
           hits[i]['tags'],
           hits[i]['likes'],
@@ -103,3 +122,5 @@ searchBtn.addEventListener('click', e => {
     Notiflix.Notify.warning('Type any word in the search box!');
   }
 });
+
+loadBtn.addEventListener('click', () => console.log('load more'));
