@@ -38,3 +38,7 @@ img {
 .photo-card {
   background-color: rgb(98, 99, 95);
 }
+
+.visible {
+  display: none;
+}

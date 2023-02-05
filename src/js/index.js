@@ -6,14 +6,15 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const loadBtn = document.querySelector('.load-more');
+loadBtn.style.visibility = 'hidden';
 const pictureGallery = document.querySelector('.gallery');
 
 const KEY = '33302175-33178da1359f032779e0154a7';
 const imageType = 'photo';
 const orientation = 'horizontal';
 const safeSearch = true;
-// const page = 1;
-const perPage = 10;
+const page = 1;
+const perPage = 40;
 
 function clearGallery() {
   //   document.querySelector('.photo-car').remove();
@@ -53,14 +54,14 @@ function createGallery(
   </div>
 </div>
 `;
-
-  pictureGallery.append(pictureDiv);
-  const lightbox = new SimpleLightbox('.photo-card photo-link', {
+  const lightbox = new SimpleLightbox('.photo-card .photo-link', {
     enableKeyboard: true,
     captions: true,
     captionsData: 'alt',
     captionDelay: 250,
   });
+
+  pictureGallery.append(pictureDiv);
 }
 
 function findPictures(query) {
@@ -73,13 +74,12 @@ function findPictures(query) {
     imageType +
     '&orientation=' +
     orientation +
-    'safesearch=' +
+    '&safesearch=' +
     safeSearch +
-    // 'page=' +
-    // 1 +
-    'per_page=' +
+    '&page=' +
+    page +
+    '&per_page=' +
     perPage;
-  console.log(URL);
   fetch(URL)
     .then(r => {
       if (r.ok) {
@@ -92,35 +92,41 @@ function findPictures(query) {
       }
     })
     .then(r => {
-      //   console.log(hits);
-      const hits = r['hits'];
+      const hits = r.hits;
+      const totalHits = r.totalHits;
       console.log(hits);
-      const totalHits = r['totalHits'];
       Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
 
-      for (let i = 0; ; i++) {
+      for (let hit of hits) {
         createGallery(
-          hits[i]['largeImageURL'],
-          hits[i]['previewURL'],
-          hits[i]['tags'],
-          hits[i]['likes'],
-          hits[i]['views'],
-          hits[i]['comments'],
-          hits[i]['downloads']
+          hit.largeImageURL,
+          hit.previewURL,
+          hit.tags,
+          hit.likes,
+          hit.views,
+          hit.comments,
+          hit.downloads
         );
       }
     })
     .catch(e => console.log(e));
 }
+loadBtn.addEventListener('click', () => {
+  //   page++;
+  console.log(page);
+  lightbox.refresh();
+
+  console.log('load more');
+});
 
 searchBtn.addEventListener('click', e => {
   e.preventDefault();
   clearGallery();
   if (searchInput.value.trim() != '') {
     findPictures(searchInput.value);
+
+    loadBtn.style.visibility = 'visible';
   } else {
     Notiflix.Notify.warning('Type any word in the search box!');
   }
 });
-
-loadBtn.addEventListener('click', () => console.log('load more'));
