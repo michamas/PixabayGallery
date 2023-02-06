@@ -38,6 +38,7 @@ async function fetchImage(query, page) {
 
     // total number of pages of search results
     totalPages = Math.ceil(response.data.totalHits / 40);
+
     // Display notification acording to the state of reposne
     console.log(response.data);
     if (response.data.totalHits === 0) {
@@ -92,12 +93,35 @@ function updateGallery(imageData) {
   //refhresh simpleligthbox
   lightbox.refresh();
 
-  if (page === 1 && totalPages !== 0 && totalPages > 1) {
+  if (page === 1 && totalPages !== 0) {
     loadBtn.style.visibility = 'visible';
-  } else if (totalPages <= 1) {
-    loadBtn.style.visibility = 'hidden';
   }
+  // else {
+  //   loadBtn.style.visibility = 'hidden';
+  // }
+  // if (page === 1 && totalPages !== 0) {
+  //   loadBtn.style.display = 'block';
+  // } else {
+  //   loadBtn.style.display = 'none';
+  // }
 }
+
+// IntersectionObserver to detect when user scrolls to bottom of page
+// const footerObserver = new IntersectionObserver(async function (
+//   entries,
+//   observer
+// ) {
+//   if (entries[0].isIntersecting === false) return;
+//   if (page >= totalPages) {
+//     Notiflix.Notify.info("You've reached the end of search results", {
+//       position: 'right-bottom',
+//     });
+//     return;
+//   }
+//   page += 1;
+//   const imageData = await fetchImage(lastQuery, page);
+//   updateGallery(imageData);
+// });
 
 // Debounced search function
 const debouncedSearch = _.debounce(async function () {
@@ -126,4 +150,5 @@ loadBtn.addEventListener('click', async function () {
   page += 1;
   const imageData = await fetchImage(previousQuery, page);
   updateGallery(imageData);
+  // footerObserver.observe(footerElement);
 });
