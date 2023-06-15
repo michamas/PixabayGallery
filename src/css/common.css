@@ -5,8 +5,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-family: Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #3c4244;
@@ -22,9 +21,55 @@ img {
 .search-form {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  background-color: #99783d;
+  background-color: #4682b4;
+  padding: 5px;
+}
+
+.search-input {
+  background-color: #4682b4;
+  color: aliceblue;
   padding: 15px;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+
+  border: 0;
+  font-size: 20px;
+}
+.search-input:hover {
+  background-color: #183b58;
+  cursor: text;
+}
+.search-input:focus {
+  outline: none;
+  background-color: #183b58;
+}
+
+::placeholder {
+  color: aliceblue;
+}
+
+.search-button {
+  font-family: Roboto, sans-serif;
+  background-color: #4682b4;
+  color: aliceblue;
+  border: 0;
+  padding: 10px;
+  font-size: 20px;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+.search-button:hover {
+  background-color: #183b58;
+  cursor: pointer;
+}
+
+.load-more {
+  font-family: Roboto, sans-serif;
+  background-color: #4682b4;
+  color: aliceblue;
+  border: 0;
+  padding: 10px;
+  font-size: 20px;
 }
 
 .gallery {
@@ -36,7 +81,14 @@ img {
   align-items: center;
 }
 .photo-card {
-  background-color: rgb(98, 99, 95);
+  background-color: #93989e;
+  padding: 10px;
+  height: 220px;
+  border-radius: 0.5rem;
+}
+
+.info-item {
+  font-size: 15px;
 }
 
 .visible {
